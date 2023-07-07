@@ -37,4 +37,5 @@ app.listen(5000, () => {
 //     type: "entrada" / "saida",
 //     registerLabel: "Compras churrasco",
 //     value: "500" (R$)
+//     timestamp: miliseconds
 // }

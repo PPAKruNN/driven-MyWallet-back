@@ -9,5 +9,6 @@ const router = Router();
 
 router.post("/nova-transacao/:tipo", validateBodySchema(registerSchema), validateToken, newRegister);
 router.get("/registros", validateToken, getRegisters);
-
+// router.delete()
+// router.put()
 export default router;

@@ -9,7 +9,8 @@ export async function newRegister (req,res) {
         currRegisters.push({
             type: req.params.tipo,
             registerLabel: req.body.registerLabel,
-            value: req.body.value
+            value: req.body.value,
+            timestamp: Date.now() 
         })
     
         await db.collection("UsersRegisters").updateOne(
