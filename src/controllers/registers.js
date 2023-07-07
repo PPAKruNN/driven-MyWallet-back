@@ -18,3 +18,13 @@ export async function newRegister (req,res) {
 
     res.sendStatus(200);
 }
+
+export async function getRegisters (req, res) {
+    try {
+        const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
+        const userRegisters = await db.collection("UsersRegisters").findOne({userId: userSession.userId});
+        return res.send(userRegisters.data);
+    } catch (error) {
+        return res.sendStatus(500); 
+    }
+} 
