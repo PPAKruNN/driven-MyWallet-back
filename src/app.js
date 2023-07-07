@@ -23,7 +23,8 @@ app.listen(5000, () => {
 // }
 
 // Session = {
-//     user_id: UUID_TOKEN
+//     userId,
+//     token: UUID_TOKEN
 // }
 
 // UsersRegisters (Collection) = {
