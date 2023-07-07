@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from "uuid";
 
-async function signUp (req, res)  {
+export async function signUp (req, res)  {
     const { name, email, password } = req.body;
 
     const emailSearch = await db.collection("Users").findOne({email: email});
@@ -25,7 +25,7 @@ async function signUp (req, res)  {
     return res.sendStatus(201); 
 }
 
-async function signIn (req, res)  {
+export async function signIn (req, res)  {
     const { email, password } = req.body;
 
     const emailSearch = await db.collection("Users").findOne({email: email});
@@ -52,5 +52,15 @@ async function signIn (req, res)  {
     return res.status(200).send(newToken);
 }
 
-
-export { signUp, signIn };
+export async function getProfile(req, res) {
+    
+    try {
+        const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
+        const userInfo = await db.collection("Users").findOne({_id: userSession.userId});
+    } catch (error) {
+        return res.sendStatus(500);
+    }
+    
+    delete userInfo.password;
+    res.send(userInfo);
+}
