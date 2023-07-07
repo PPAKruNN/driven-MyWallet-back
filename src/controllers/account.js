@@ -11,10 +11,15 @@ async function signUp (req, res)  {
     
     const passwordHash = bcrypt.hashSync(password, 10);
 
-    await db.collection("Users").insertOne({
+    const newUser = await db.collection("Users").insertOne({
         name,
         email,
         password: passwordHash
+    })
+
+    await db.collection("UsersRegisters").insertOne({
+        userId: newUser.insertedId,
+        data: [] 
     })
 
     return res.sendStatus(201); 
