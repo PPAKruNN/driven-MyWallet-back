@@ -56,7 +56,7 @@ export async function deleteRegister(req, res) {
             {$set: {data: currRegisters}}     
         )
 
-        return res.sendStatus(200);
+        return res.send(currRegisters);
 
     } catch (error) {
         return res.status(500).send(error); 
