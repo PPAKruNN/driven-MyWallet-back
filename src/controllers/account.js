@@ -57,10 +57,9 @@ export async function getProfile(req, res) {
     try {
         const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
         const userInfo = await db.collection("Users").findOne({_id: userSession.userId});
+        delete userInfo.password;
+        res.send(userInfo);
     } catch (error) {
         return res.sendStatus(500);
     }
-    
-    delete userInfo.password;
-    res.send(userInfo);
 }
