@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const signinFormSubmit = Joi.object({
-    name: Joi.string().required().trim(),
+    email: Joi.string().email().required().trim(),
     password: Joi.string().required().trim()
 }) 
 

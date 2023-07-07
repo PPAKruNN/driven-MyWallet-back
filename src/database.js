@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import dotenv from dotenv;
+import dotenv from "dotenv";
 
 dotenv.config();
 const mClient = new MongoClient(process.env.DATABASE_URL);
@@ -13,3 +13,10 @@ try {
 
 const db = mClient.db();
 export default db;
+
+/*
+Collections: 
+- Users
+- Sessions
+- UsersRegisters
+*/

@@ -1,8 +1,7 @@
 import { json } from "express";
 import Express from 'express';
-import cors from cors;
-
-import { router as accountsRouter } from "./routes/accounts.routes";
+import cors from "cors";
+import accountsRouter from "./routes/accounts.routes.js";
 
 const app = Express();
 app.use(cors());
@@ -20,14 +19,14 @@ app.listen(5000, () => {
 //     _id,
 //     name, 
 //     email,
-//     passwordHash, 
+//     password, 
 // }
 
 // Session = {
 //     user_id: UUID_TOKEN
 // }
 
-// UserRegisters (Collection) = {
+// UsersRegisters (Collection) = {
 //     userId: new ObjectId(user._id),
 //     data: [] (Array of registers)
 // }
