@@ -14,6 +14,7 @@ async function validateToken(req, res, next) {
     if(!tokenSearch) return res.sendStatus(404) // not found token on database 
     
     req.headers.authorization = token; // replace BEARER <token> for just token.
+    res.locals.userSession = tokenSearch;
     next()
 }
 

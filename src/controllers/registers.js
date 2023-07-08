@@ -2,8 +2,7 @@ import db from "../database.js";
 
 export async function newRegister (req,res) {
     try {
-        const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
-        const userRegisters = await db.collection("UsersRegisters").findOne( {userId: userSession.userId} )
+        const userRegisters = await db.collection("UsersRegisters").findOne( {userId: res.locals.userSession.userId} )
         const currRegisters = userRegisters.data;
 
         currRegisters.push({
@@ -14,7 +13,7 @@ export async function newRegister (req,res) {
         })
     
         await db.collection("UsersRegisters").updateOne(
-            {userId: userSession.userId}, 
+            {userId: res.locals.userSession.userId}, 
             {$set: {data: currRegisters}}     
         )
 
@@ -27,8 +26,7 @@ export async function newRegister (req,res) {
 
 export async function getRegisters (req, res) {
     try {
-        const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
-        const userRegisters = await db.collection("UsersRegisters").findOne({userId: userSession.userId});
+        const userRegisters = await db.collection("UsersRegisters").findOne({userId: res.locals.userSession.userId});
         return res.send(userRegisters.data);
     } catch (error) {
         return res.sendStatus(500); 
@@ -38,27 +36,43 @@ export async function getRegisters (req, res) {
 export async function deleteRegister(req, res) {
     
     try {
-        const { timestamp, registerLabel } = req.body;
-        const userSession = await db.collection("Sessions").findOne({token: req.headers.authorization});
-        const userRegisters = await db.collection("UsersRegisters").findOne({userId: userSession.userId});
-        const currRegisters = userRegisters.data;
+        const userRegisters = await db.collection("UsersRegisters").findOne({userId: res.locals.userSession.userId});
+        const registers = res.locals.registers;
 
-        const index = currRegisters.findIndex( (curr) => {
-            console.log(curr.timestamp, timestamp, curr.registerLabel, registerLabel)
-            return curr.timestamp === timestamp && curr.registerLabel === registerLabel;
-        });
-        if(index === -1) return res.sendStatus(400);
-
-        currRegisters.splice(index, 1);
+        registers.splice(res.locals.currRegisterIndex, 1);
 
         await db.collection("UsersRegisters").updateOne(
-            {userId: userSession.userId}, 
-            {$set: {data: currRegisters}}     
+            {userId: res.locals.userSession.userId}, 
+            {$set: {data: registers}}     
         )
 
-        return res.send(currRegisters);
+        return res.send(registers);
 
     } catch (error) {
         return res.status(500).send(error); 
+    }
+}
+
+export async function putRegister (req, res) {
+    try {
+        const { tipo, registerLabel, value, timestamp } = req.body
+        const newRegister = {
+            type: tipo,
+            registerLabel,
+            value,
+            timestamp
+        }
+        
+        const registers = res.locals.registers;
+        registers[res.locals.currRegisterIndex] = newRegister;
+
+        await db.collection("UsersRegisters").updateOne(
+            {userId: res.locals.userSession.userId}, 
+            {$set: {data: registers}}     
+        )
+
+        return res.send(registers);
+    } catch (error) {
+        return res.status(500).send(error) 
     }
 }
