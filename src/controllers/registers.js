@@ -63,7 +63,7 @@ export async function putRegister (req, res) {
             type: tipo,
             registerLabel,
             value,
-            timestamp,
+            timestamp: parseInt(timestamp),
             date
         }
         
