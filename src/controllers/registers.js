@@ -57,7 +57,8 @@ export async function deleteRegister(req, res) {
 
 export async function putRegister (req, res) {
     try {
-        const { tipo, registerLabel, value, timestamp } = req.body
+        const { date, tipo, registerLabel, value } = req.body
+        const { timestamp } = req.headers;
         const newRegister = {
             type: tipo,
             registerLabel,
@@ -76,6 +77,7 @@ export async function putRegister (req, res) {
 
         return res.send(registers);
     } catch (error) {
+        console.log(error);
         return res.status(500).send(error) 
     }
 }
