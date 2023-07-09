@@ -27,8 +27,10 @@ export async function signUp (req, res)  {
 
 export async function signIn (req, res)  {
     const { email, password } = req.body;
-
+    console.log(email, password)
+    
     const emailSearch = await db.collection("Users").findOne({email: email});
+    console.log(emailSearch)
     if(!emailSearch) return res.sendStatus(404);
     
     const passwordVerify = bcrypt.compareSync(password, emailSearch.password);

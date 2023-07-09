@@ -9,7 +9,8 @@ export async function newRegister (req,res) {
             type: req.params.tipo,
             registerLabel: req.body.registerLabel,
             value: req.body.value,
-            timestamp: Date.now() 
+            timestamp: Date.now(),
+            date: new Date().toUTCString()
         })
     
         await db.collection("UsersRegisters").updateOne(
@@ -20,6 +21,7 @@ export async function newRegister (req,res) {
         res.send(currRegisters);
         
     } catch (error) {
+        console.log(error);
         res.status(500).send(error);
     }
 }
@@ -60,7 +62,8 @@ export async function putRegister (req, res) {
             type: tipo,
             registerLabel,
             value,
-            timestamp
+            timestamp,
+            date
         }
         
         const registers = res.locals.registers;
